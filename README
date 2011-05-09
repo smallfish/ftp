@@ -4,12 +4,10 @@ example:
 
 func main() {
     ftp := new(FTP)
-     ftp.Connect("10.250.6.139", 2222)
-     ftp.Login("admin", "admin")
+     ftp.Connect("10.0.0.1", 20)
+     ftp.Login("user", "****")
      ftp.Request("TYPE I")
-     ftp.Stor("a.txt", "d:/a.txt")
-     ftp.Stor("get-pip.py", "d:/get-pip.py")
-     ftp.Stor("putty.exe", "d:/putty.exe")
+     ftp.Stor("a.txt", "/path/a.txt")
      ftp.List()
      ftp.Pwd()
      ftp.List()
