@@ -21,12 +21,13 @@ func main() {
         fmt.Println("error: login failure")
         os.Exit(-1)
     }
-    ftp.Request("TYPE I")
     // pwd
     ftp.Pwd()
     fmt.Println("code:", ftp.Code, ", message:", ftp.Message)
     // mkdir new dir
     ftp.Mkd("/smallfish")
+    // stor new file
+    ftp.Request("TYPE I")
     b, _ := ioutil.ReadFile("/path/a.txt")
     ftp.Stor("/smallfish/a.txt", b)
     // quit
