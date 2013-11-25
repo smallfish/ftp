@@ -7,7 +7,7 @@ go get github.com/xiangzhai/goftp
 
 example 
 ========
-
+```go
 package main
 
 import (                                                                        
@@ -36,3 +36,4 @@ func main() {
     // quit                                                                     
     ftp.Quit()                                                                  
 }
+```
