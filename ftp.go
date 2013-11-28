@@ -1,5 +1,4 @@
-// FTP Client for Google Go language.
-// Author: smallfish <smallfish.xy@gmail.com>
+// author: smallfish <smallfish.xy@gmail.com>
 
 package ftp
 

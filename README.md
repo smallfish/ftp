@@ -3,7 +3,7 @@ FTP client for Google Go language
 
 install 
 ========
-go get github.com/xiangzhai/goftp
+go get github.com/smallfish/ftp.go
 
 example 
 ========
@@ -13,27 +13,34 @@ package main
 import (                                                                        
     "fmt"                                                                       
     "os"                                                                        
-    "github.com/xiangzhai/goftp"                                                
+    "github.com/smallfish/ftp.go"
 )
 
 func main() {                                                                   
-    // new ftp                                                                  
     ftp := new(ftp.FTP)                                                         
-    // set debug, default false                                                 
-    ftp.Debug = true                                                            
-    // connect                                                                  
+    // debug default false
+    ftp.Debug = true
     ftp.Connect("localhost", 21)                                                
-    // login                                                                    
-    ftp.Login("anonymous", "")                                                  
-    // login failure                                                            
-    if ftp.Code == 530 {                                                        
+
+    // login
+    ftp.Login("anonymous", "")
+    if ftp.Code == 530 {                                                         
         fmt.Println("error: login failure")                                     
         os.Exit(-1)                                                             
     }                                                                           
-    // pwd                                                                      
-    ftp.Pwd()                                                                   
+    
+    // pwd
+    ftp.Pwd()
     fmt.Println("code:", ftp.Code, ", message:", ftp.Message)                   
-    // quit                                                                     
+
+    // make dir
+    ftp.Mkd("/path")
+    ftp.Request("TYPE I")
+
+    // stor file
+    b, _ := ioutil.ReadFile("/path/a.txt")
+    ftp.Stor("/path/a.txt", b)
+    
     ftp.Quit()                                                                  
 }
 ```
