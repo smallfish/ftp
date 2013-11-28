@@ -8,6 +8,7 @@ import (
 	"net"
 	"strconv"
 	"strings"
+    "os"
 )
 
 type FTP struct {
@@ -46,6 +47,15 @@ func (ftp *FTP) Login(user, passwd string) {
 	ftp.passwd = passwd
 }
 
+func (ftp *FTP) WriteToFile(f *os.File, offset int) {
+	ret := make([]byte, 1024)
+	for {
+        n, err := ftp.conn.Read(ret)
+        if err != nil { panic(err) }
+    }
+    return
+}
+
 func (ftp *FTP) Response() (code int, message string) {
 	ret := make([]byte, 1024)
 	n, _ := ftp.conn.Read(ret)
@@ -56,6 +66,12 @@ func (ftp *FTP) Response() (code int, message string) {
 	ftp.debugInfo(fmt.Sprintf("<*code*> %d", code))
 	ftp.debugInfo("<*message*> " + message)
 	return
+}
+
+func (ftp *FTP) Get(cmd string) {
+	ftp.conn.Write([]byte(cmd + "\r\n"))
+	ftp.cmd = cmd
+	ftp.WriteToFile()
 }
 
 func (ftp *FTP) Request(cmd string) {
