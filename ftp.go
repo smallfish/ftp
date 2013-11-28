@@ -5,7 +5,6 @@ package ftp
 
 import (
 	"fmt"
-	"os"
 	"net"
 	"strconv"
 	"strings"
@@ -23,7 +22,7 @@ type FTP struct {
 	Debug   bool
 	stream  []byte
 	conn    net.Conn
-	Error   os.Error
+	Error   error
 }
 
 func (ftp *FTP) debugInfo(s string) {
@@ -65,7 +64,7 @@ func (ftp *FTP) Request(cmd string) {
 	ftp.Code, ftp.Message = ftp.Response()
 	if cmd == "PASV" {
 		start, end := strings.Index(ftp.Message, "("), strings.Index(ftp.Message, ")")
-		s := strings.Split(ftp.Message[start:end], ",", -1)
+		s := strings.Split(ftp.Message[start:end], ",")
 		l1, _ := strconv.Atoi(s[len(s)-2])
 		l2, _ := strconv.Atoi(s[len(s)-1])
 		ftp.pasv = l1*256 + l2
