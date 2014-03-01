@@ -1,9 +1,9 @@
-FTP client for Google Go language 
+FTP client for Go(lang)
 ==================================
 
 install 
 ========
-go get github.com/smallfish/ftp.go
+go get github.com/smallfish/ftp
 
 example 
 ========
@@ -13,7 +13,7 @@ package main
 import (                                                                        
     "fmt"                                                                       
     "os"                                                                        
-    "github.com/smallfish/ftp.go"
+    "github.com/smallfish/ftp"
 )
 
 func main() {                                                                   
