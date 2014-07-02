@@ -59,8 +59,16 @@ func (ftp *FTP) Response() (code int, message string) {
 
 func (ftp *FTP) Request(cmd string) {
 	ftp.conn.Write([]byte(cmd + "\r\n"))
-	ftp.cmd = cmd
-	ftp.Code, ftp.Message = ftp.Response()
+	if (cmd != "PASV") && (ftp.pasv > 0) {
+		ftp.Message = newRequest(ftp.host, ftp.pasv, ftp.stream)
+		ftp.debugInfo("<*response*> " + ftp.Message)
+		ftp.pasv = 0
+		ftp.stream = nil
+		ftp.Code, _ = ftp.Response()
+	} else {
+		ftp.cmd = cmd
+		ftp.Code, ftp.Message = ftp.Response()
+	}
 	if cmd == "PASV" {
 		start, end := strings.Index(ftp.Message, "("), strings.Index(ftp.Message, ")")
 		s := strings.Split(ftp.Message[start:end], ",")
@@ -68,13 +76,7 @@ func (ftp *FTP) Request(cmd string) {
 		l2, _ := strconv.Atoi(s[len(s)-1])
 		ftp.pasv = l1*256 + l2
 	}
-	if (cmd != "PASV") && (ftp.pasv > 0) {
-		ftp.Message = newRequest(ftp.host, ftp.pasv, ftp.stream)
-		ftp.debugInfo("<*response*> " + ftp.Message)
-		ftp.pasv = 0
-		ftp.stream = nil
-		ftp.Code, _ = ftp.Response()
-	}
+	
 }
 
 func (ftp *FTP) Pasv() {
