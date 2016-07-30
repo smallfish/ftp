@@ -8,7 +8,7 @@ go get github.com/smallfish/ftp
 example 
 ========
 ```go
-package core
+package main
 
 import (
 	"fmt"
