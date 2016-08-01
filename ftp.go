@@ -32,7 +32,9 @@ func (ftp *FTP) debugInfo(s string) {
 
 func (ftp *FTP) Connect(host string, port int) {
 	addr := fmt.Sprintf("%s:%d", host, port)
-	ftp.conn, ftp.Error = net.Dial("tcp", addr)
+	if ftp.conn, ftp.Error = net.Dial("tcp", addr); ftp.Error != nil {
+		return
+	}
 	ftp.Response()
 	ftp.host = host
 	ftp.port = port
